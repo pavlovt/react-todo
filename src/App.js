@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import Header from './components/Header';
+import Todo from './components/Todo';
+import Upsert from './components/Upsert';
 
 class App extends Component {
   constructor(props) {
@@ -37,12 +40,13 @@ class App extends Component {
     const {todos, input, idx} = this.state;
     return (
       <div className="App">
-        <input type="text" value={input} onChange={this.change} />
-        {idx > -1 ? <button onClick={this.saveTodo}>Save Todo</button> : <button onClick={this.addTodo}>Add Todo</button>}
-
+        <Header />
+        <Upsert idx={idx} input={input} change={this.change} saveTodo={this.saveTodo} addTodo={this.addTodo} />
         <ul>
           {todos.map((v,idx) => {
-            return <li key={idx}>{v} <a href="#" onClick={this.onEdit.bind(this, idx)}>Edit</a> <a href="#" onClick={this.onDelete.bind(this, idx)}>Delete</a></li>;
+            return <Todo key={idx} v={v} 
+              onEdit={this.onEdit.bind(this, idx)} 
+              onDelete={this.onDelete.bind(this, idx)} />
           })}
         </ul>
       </div>
