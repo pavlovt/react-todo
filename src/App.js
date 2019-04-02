@@ -4,6 +4,9 @@ import Header from './components/Header';
 import Todo from './components/Todo';
 import Upsert from './components/Upsert';
 
+import actions from './actions';
+import {connect} from 'react-redux';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +40,9 @@ class App extends Component {
   }
 
   render() {
-    const {todos, input, idx} = this.state;
+    const {input, idx} = this.state;
+    const {todos, addTodo, deleteTodo, updateTodo} = this.props;
+
     return (
       <div className="App">
         <Header />
@@ -46,7 +51,7 @@ class App extends Component {
           {todos.map((v,idx) => {
             return <Todo key={idx} v={v} 
               onEdit={this.onEdit.bind(this, idx)} 
-              onDelete={this.onDelete.bind(this, idx)} />
+              onDelete={() => deleteTodo(idx)} />
           })}
         </ul>
       </div>
@@ -54,4 +59,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    todos: state.get("todos")
+  };
+}
+ 
+export default connect(mapStateToProps, actions)(App);
+
